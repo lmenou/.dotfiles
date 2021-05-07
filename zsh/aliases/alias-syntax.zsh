@@ -10,7 +10,7 @@ alias gl="git log --all --decorate --oneline --graph"
 alias gpull="git pull"
 alias gpush="git push"
 alias gc="git commit -m"
-alias ga="git add ."
+alias ga="git add"
 
 # conda aliases
 alias ccb="conda activate base"
