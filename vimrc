@@ -39,16 +39,13 @@ call plug#begin('~/.vim/plugged')
 Plug 'itchyny/lightline.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-scripts/ReplaceWithRegister'
-Plug 'michaeljsmith/vim-indent-object'
-Plug 'wellle/targets.vim'
 Plug 'dense-analysis/ale'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-" Explanation: I had a new mapping here
-" This plugin is loaded using native package manager
-" Plug 'tpope/vim-unimpaired'
+" Explanation: I add a new mapping here
+Plug 'lmenou/vim-unimpaired', {'branch': 'dev'}
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -58,6 +55,7 @@ Plug 'junegunn/gv.vim'
 Plug 'morhetz/gruvbox'
 Plug 'arcticicestudio/nord-vim'
 Plug 'tyrannicaltoucan/vim-quantum'
+Plug 'itchyny/landscape.vim'
 
 call plug#end()
 
@@ -95,19 +93,20 @@ set path+=**
 " Explanation: Opening current or root hitting - or +
 " let g:netrw_bufsettings = 'nomodifiable nomodified number nobuflisted nowrap readonly'
 let g:netrw_list_hide= '.*\.pyc$, *\DS_Store$'
-let g:netrw_winsize = 40
+let g:netrw_winsize = 45
 let g:netrw_banner = 0
-nnoremap - :Lexplore.<CR>
 nnoremap + :Lexplore<CR>
+nnoremap - :Explore<CR>
+
 
 " FZF settings
 " Explanation: Window at the bottom
 " let g:fzf_layout = { 'down': '50%' }
 " Explanation: Popup window at the center of the screen
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
-nnoremap <Leader>bb :Buffers<CR>
-nnoremap <Leader>ff :Files<CR>
-nnoremap <Leader>fz :FZF ~<CR>
+nnoremap <Leader>b :Buffers<CR>
+nnoremap <Leader>f :Files<CR>
+nnoremap <Leader>h :FZF ~<CR>
 
 " Configuration of gv.vim
 " Explanation: To show all !
@@ -121,7 +120,9 @@ let g:lightline = {
 		\             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
 		\ },
 		\ 'component_function': {
-		\   'gitbranch': 'FugitiveHead'
+		\   'gitbranch': 'FugitiveHead',
+		\   'fileformat': 'LightlineFileformat',
+		\   'filetype': 'LightlineFiletype',
 		\ },
 		\ }
 
@@ -151,10 +152,8 @@ let g:vtr_filetype_runner_overrides = {
 
 " Configuration of vim-fugitive
 nnoremap <Leader>gs :G<CR>
-nnoremap <Leader>gpl :Git pull<CR>
-nnoremap <Leader>gps :Git push<CR>
-nnoremap <Leader>dgl :diffget //3<CR>
-nnoremap <Leader>dga :diffget //2<CR>
+nnoremap <Leader>dl :diffget //3<CR>
+nnoremap <Leader>da :diffget //2<CR>
 
 " Configuration of ALE
 let g:ale_linters = {'python': ['jedils', 'flake8', 'pycodestyle', 'pydocstyle', 'pyflakes']}
@@ -192,5 +191,5 @@ endfunction
 " set t_Co=256
 set termguicolors
 set bg=dark
-let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_contrast_dark = 'low'
 colorscheme gruvbox
