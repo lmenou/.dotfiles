@@ -6,7 +6,7 @@ PYTHONPATH="${PYTHONPATH}:$HOME/py-phasesep"
 export PYTHONPATH
 
 # To  use subl command line for sublime
-export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
+# export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
 
 # Changing prompt command at the beginning 
 # ORIGIN : PS1='%n@%m %1~ %# ' i.e remove the directory printed in tmux
@@ -16,7 +16,7 @@ export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
 PS1='[l@z] >> '
 
 export CLICOLOR=1
-export LSCOLORS=ExFxExDxBxegedabagExEx
+export LSCOLORS=exfxexdxbxegedabagexex
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
