@@ -9,7 +9,8 @@ set laststatus=2
 set tabstop=8
 set softtabstop=4
 set shiftwidth=4
-set noexpandtab
+set smarttab
+set expandtab
 set hidden
 set noerrorbells
 set visualbell
@@ -28,11 +29,13 @@ set splitright
 set scrolloff=5
 set encoding=utf-8
 set ttimeout
-set ttimeoutlen=5
+set ttimeoutlen=10
 set lazyredraw
 set showcmd
-" To use omnicompletion provided by ALE
-set omnifunc=ale#completion#OmniFunc
+" Add dictionary
+" set dictionary+=/usr/share/dict/words
+" Use code omnicompletion from ALE
+" set omnifunc=ale#completion#OmniFunc
 
 call plug#begin('~/.vim/plugged')
 
@@ -76,6 +79,7 @@ autocmd FileType json syntax match Comment +\/\/.\+$+
 
 " remap leader key to space bar
 let mapleader = " "
+let maplocalleader = ","
 
 " To use tags in vim, set the path to find tags
 " Explanation: Add all the directories up and up until HOME in
@@ -142,9 +146,12 @@ nnoremap <Leader>. :vertical:resize +10<CR>
 
 " Configuration of vim-tmux-runner
 nnoremap <Leader>va :VtrAttachToPane<CR>
+nnoremap <Leader>vo :VtrOpenRunner<CR>
 nnoremap <Leader>vs :VtrSendFile<CR>
+nnoremap <Leader>vc :VtrSendCommand<CR>
 nnoremap <Leader>vf :VtrFlushCommand<CR>
 nnoremap <Leader>vk :VtrKillRunner<CR>
+nnoremap <Leader>cc :VtrSendCtrlC<CR>
 
 let g:vtr_filetype_runner_overrides = {
   \ 'python': 'python -W ignore {file}',
@@ -156,26 +163,26 @@ nnoremap <Leader>dl :diffget //3<CR>
 nnoremap <Leader>da :diffget //2<CR>
 
 " Configuration of ALE
-let g:ale_linters = {'python': ['jedils', 'flake8', 'pycodestyle', 'pydocstyle', 'pyflakes']}
+let g:ale_linters = {'python': ['flake8', 'pycodestyle', 'pydocstyle', 'pyflakes']}
 let g:ale_fixers = {
 		\   '*': ['remove_trailing_lines', 'trim_whitespace'],
 		\   'python': ['autopep8', 'isort'],
 		\}
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 1
-let g:ale_lint_on_enter = 0
-let g:ale_lint_on_save = 1
-let g:ale_fix_on_save = 1
+" let g:ale_lint_on_text_changed = 'never'
+" let g:ale_lint_on_insert_leave = 1
+" let g:ale_lint_on_enter = 0
+" let g:ale_lint_on_save = 1
+" let g:ale_fix_on_save = 1
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] says: %s [%severity%]'
 
-nnoremap gd :ALEGoToDefinition<CR>
-nnoremap K :ALEHover<CR>
+nnoremap <Leader>gd :ALEGoToDefinition<CR>
+nnoremap <Leader>K :ALEHover<CR>
 
 " Editing and sourcing the vimrc faster
-nnoremap <leader>ev :vsplit $MYVIMRC<CR>
-nnoremap <leader>sv :source $MYVIMRC<CR>
+nnoremap <Leader>ev :vsplit $MYVIMRC<CR>
+nnoremap <Leader>sv :source $MYVIMRC<CR>
 
 " Running Macro over an entire Visual bloc
 " Usage: Select a visual bloc and run @register over the bloc
@@ -191,5 +198,5 @@ endfunction
 " set t_Co=256
 set termguicolors
 set bg=dark
-let g:gruvbox_contrast_dark = 'low'
+let g:gruvbox_contrast_dark = 'soft'
 colorscheme gruvbox
