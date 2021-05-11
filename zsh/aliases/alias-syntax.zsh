@@ -19,3 +19,6 @@ alias ccd="conda deactivate"
 
 # jupyter aliases
 alias jup="jupyter-notebook"
+
+# tags aliases
+alias tag="ctags -R ."
