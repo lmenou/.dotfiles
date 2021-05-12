@@ -99,8 +99,8 @@ set path+=**
 let g:netrw_list_hide= '.*\.pyc$, *\DS_Store$'
 let g:netrw_winsize = 45
 let g:netrw_banner = 0
-nnoremap + :Lexplore<CR>
-nnoremap - :Explore<CR>
+nnoremap + :Explore<CR>
+nnoremap - :Explore.<CR>
 
 
 " FZF settings
@@ -118,7 +118,7 @@ nnoremap <Leader>gl :GV --all<CR>
 
 " Set lightline
 let g:lightline = {
-		\ 'colorscheme' : 'gruvbox',
+		\ 'colorscheme' : 'quantum',
 		\ 'active': {
 		\   'left': [ [ 'mode', 'paste' ],
 		\             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
@@ -151,7 +151,7 @@ nnoremap <Leader>vs :VtrSendFile<CR>
 nnoremap <Leader>vc :VtrSendCommand<CR>
 nnoremap <Leader>vf :VtrFlushCommand<CR>
 nnoremap <Leader>vk :VtrKillRunner<CR>
-nnoremap <Leader>cc :VtrSendCtrlC<CR>
+nnoremap <Leader>c :VtrSendCtrlC<CR>
 
 let g:vtr_filetype_runner_overrides = {
   \ 'python': 'python -W ignore {file}',
@@ -163,22 +163,23 @@ nnoremap <Leader>dl :diffget //3<CR>
 nnoremap <Leader>da :diffget //2<CR>
 
 " Configuration of ALE
-let g:ale_linters = {'python': ['flake8', 'pycodestyle', 'pydocstyle', 'pyflakes']}
+let g:ale_linters = {'python': ['jedils', 'flake8', 'pycodestyle', 'pydocstyle']}
 let g:ale_fixers = {
 		\   '*': ['remove_trailing_lines', 'trim_whitespace'],
 		\   'python': ['autopep8', 'isort'],
 		\}
-" let g:ale_lint_on_text_changed = 'never'
-" let g:ale_lint_on_insert_leave = 1
-" let g:ale_lint_on_enter = 0
-" let g:ale_lint_on_save = 1
-" let g:ale_fix_on_save = 1
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_save = 1
+let g:ale_fix_on_save = 1
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] says: %s [%severity%]'
+let g:ale_set_balloons = 1
 
-nnoremap <Leader>gd :ALEGoToDefinition<CR>
-nnoremap <Leader>K :ALEHover<CR>
+nnoremap gd :ALEGoToDefinition<CR>
+nnoremap K :ALEHover<CR>
 
 " Editing and sourcing the vimrc faster
 nnoremap <Leader>ev :vsplit $MYVIMRC<CR>
@@ -199,4 +200,4 @@ endfunction
 set termguicolors
 set bg=dark
 let g:gruvbox_contrast_dark = 'soft'
-colorscheme gruvbox
+colorscheme quantum
