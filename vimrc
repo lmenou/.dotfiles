@@ -2,7 +2,8 @@ syntax on
 
 set number
 set relativenumber
-set cindent
+set autoindent
+set smartindent
 set incsearch
 set hlsearch
 set laststatus=2
@@ -32,6 +33,8 @@ set ttimeout
 set ttimeoutlen=10
 set lazyredraw
 set showcmd
+
+" Explanation: Completion or not ?
 " Add dictionary
 " set dictionary+=/usr/share/dict/words
 " Use code omnicompletion from ALE
@@ -39,26 +42,34 @@ set showcmd
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'itchyny/lightline.vim'
+" Git
 Plug 'airblade/vim-gitgutter'
-Plug 'vim-scripts/ReplaceWithRegister'
-Plug 'dense-analysis/ale'
 Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
+
+" Edit
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-" Explanation: I add a new mapping here
+Plug 'tmsvg/pear-tree'
+" Explanation: I added a map here, hence the fork
+" Type yom ]om [om in normal mode to toggle the number + relativenumber
 Plug 'lmenou/vim-unimpaired', {'branch': 'dev'}
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'christoomey/vim-tmux-runner'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/gv.vim'
-" Colorscheme
+
+" Env and colorscheme
+Plug 'itchyny/lightline.vim'
 Plug 'morhetz/gruvbox'
 Plug 'arcticicestudio/nord-vim'
 Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'itchyny/landscape.vim'
+Plug 'nanotech/jellybeans.vim'
+
+" Integration
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'christoomey/vim-tmux-runner'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'dense-analysis/ale'
 
 call plug#end()
 
@@ -77,9 +88,9 @@ let &t_EI.="\e[2 q" "EI = NORMAL mode (ELSE)
 " Enable syntax highlighting in JSON
 autocmd FileType json syntax match Comment +\/\/.\+$+
 
-" remap leader key to space bar
+" remap leader and localleader key to space bar
 let mapleader = " "
-let maplocalleader = ","
+let maplocalleader = " "
 
 " To use tags in vim, set the path to find tags
 " Explanation: Add all the directories up and up until HOME in
@@ -95,10 +106,8 @@ set path+=**
 " To use netrw easily
 " TODO: Figure out hiding list
 " Explanation: Opening current or root hitting - or +
-" let g:netrw_bufsettings = 'nomodifiable nomodified number nobuflisted nowrap readonly'
+let g:netrw_bufsettings = 'nomodifiable nomodified number nobuflisted nowrap readonly'
 let g:netrw_list_hide= '.*\.pyc$, *\DS_Store$'
-let g:netrw_winsize = 45
-let g:netrw_banner = 0
 nnoremap + :Explore<CR>
 nnoremap - :Explore.<CR>
 
@@ -130,10 +139,10 @@ let g:lightline = {
 		\ },
 		\ }
 
-" Set nohighlight search after search
+" Set nohighlight after search
 nnoremap <TAB><CR> :nohl<CR>
 
-" Shortcut for tab for tab creation
+" Shortcut for tab creation
 nnoremap <Leader>t :tabe<CR>
 
 " Resize the panes in vim
@@ -145,13 +154,7 @@ nnoremap <Leader>, :vertical:resize -10<CR>
 nnoremap <Leader>. :vertical:resize +10<CR>
 
 " Configuration of vim-tmux-runner
-nnoremap <Leader>va :VtrAttachToPane<CR>
-nnoremap <Leader>vo :VtrOpenRunner<CR>
-nnoremap <Leader>vs :VtrSendFile<CR>
-nnoremap <Leader>vc :VtrSendCommand<CR>
-nnoremap <Leader>vf :VtrFlushCommand<CR>
-nnoremap <Leader>vk :VtrKillRunner<CR>
-nnoremap <Leader>c :VtrSendCtrlC<CR>
+let g:VtrUseVtrMaps = 1
 
 let g:vtr_filetype_runner_overrides = {
   \ 'python': 'python -W ignore {file}',
@@ -176,10 +179,11 @@ let g:ale_fix_on_save = 1
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] says: %s [%severity%]'
-let g:ale_set_balloons = 1
 
 nnoremap gd :ALEGoToDefinition<CR>
 nnoremap K :ALEHover<CR>
+nmap <silent> [g <Plug>(ale_previous_wrap)
+nmap <silent> ]g <Plug>(ale_next_wrap)
 
 " Editing and sourcing the vimrc faster
 nnoremap <Leader>ev :vsplit $MYVIMRC<CR>
@@ -199,5 +203,5 @@ endfunction
 " set t_Co=256
 set termguicolors
 set bg=dark
-let g:gruvbox_contrast_dark = 'soft'
+" let g:gruvbox_contrast_dark = 'soft'
 colorscheme quantum
