@@ -24,6 +24,7 @@ set autoread
 set cursorline
 set backspace=indent,eol,start
 set wildmenu
+set wildoptions=""
 set wildignore+=*.pyc
 set noshowmode
 set splitright
@@ -33,6 +34,17 @@ set ttimeout
 set ttimeoutlen=10
 set lazyredraw
 set showcmd
+
+" To use tags in vim, set the path to find tags
+" Explanation: Add all the directories up and up until HOME in
+" the path for tags (meaning of the semicolon). Stop at the first hit
+set tags=./tags,tags;$HOME
+
+" To use built-in fuzzy finder of vim
+" Usage: Open vim in the root of the project and use :find in
+" cmd mode + <TAB> completion
+" Explanation: ** look to all subdirectories
+set path+=**,*,;
 
 " Explanation: Completion or not ?
 " Add dictionary
@@ -52,9 +64,6 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tmsvg/pear-tree'
-" Explanation: I added a map here, hence the fork
-" Type yom ]om [om in normal mode to toggle the number + relativenumber
-Plug 'lmenou/vim-unimpaired', {'branch': 'dev'}
 
 " Env and colorscheme
 Plug 'itchyny/lightline.vim'
@@ -67,8 +76,6 @@ Plug 'nanotech/jellybeans.vim'
 " Integration
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-tmux-runner'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
 Plug 'dense-analysis/ale'
 
 call plug#end()
@@ -92,34 +99,18 @@ autocmd FileType json syntax match Comment +\/\/.\+$+
 let mapleader = " "
 let maplocalleader = " "
 
-" To use tags in vim, set the path to find tags
-" Explanation: Add all the directories up and up until HOME in
-" the path for tags (meaning of the semicolon). Stop at the first hit
-set tags=./tags,tags;$HOME
-
-" To use built-in fuzzy finder of vim
-" Usage: Open vim in the root of the project and use :find in
-" cmd mode + <TAB> completion
-" Explanation: ** look to all subdirectories
-set path+=**
 
 " To use netrw easily
 " TODO: Figure out hiding list
 " Explanation: Opening current or root hitting - or +
 let g:netrw_bufsettings = 'nomodifiable nomodified number nobuflisted nowrap readonly'
 let g:netrw_list_hide= '.*\.pyc$, *\DS_Store$'
+" Explore root (from where vim is launched)
 nnoremap + :Explore<CR>
-nnoremap - :Explore.<CR>
-
-
-" FZF settings
-" Explanation: Window at the bottom
-" let g:fzf_layout = { 'down': '50%' }
-" Explanation: Popup window at the center of the screen
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
-nnoremap <Leader>b :Buffers<CR>
-nnoremap <Leader>f :Files<CR>
-nnoremap <Leader>h :FZF ~<CR>
+" Explore current file directory
+nnoremap - :Explore .<CR>
+" To go home
+nnoremap ~ :Explore ~/<CR>
 
 " Configuration of gv.vim
 " Explanation: To show all !
@@ -155,6 +146,7 @@ nnoremap <Leader>. :vertical:resize +10<CR>
 
 " Configuration of vim-tmux-runner
 let g:VtrUseVtrMaps = 1
+nnoremap <Leader>c :VtrSendCtrlC<CR>
 
 let g:vtr_filetype_runner_overrides = {
   \ 'python': 'python -W ignore {file}',
@@ -185,9 +177,42 @@ nnoremap K :ALEHover<CR>
 nmap <silent> [g <Plug>(ale_previous_wrap)
 nmap <silent> ]g <Plug>(ale_next_wrap)
 
+" Option toggling
+" Explanation: Hit co? to change options
+" Inspired from vim-unimpaired :)
+function! s:map_change_option(...)
+  let [key, opt] = a:000[0:1]
+  let op = get(a:, 3, 'set '.opt.'!')
+  execute printf("nnoremap co%s :%s<bar>set %s?<CR>", key, op, opt)
+endfunction
+
+call s:map_change_option('n', 'number')
+call s:map_change_option('r', 'relativenumber')
+call s:map_change_option('s', 'spell')
+call s:map_change_option('w', 'wrap')
+call s:map_change_option('h', 'hlsearch')
+
+" Useful remap also inspired from vim-unimpaired :)
+" Explanation: Navigating between buffers and in the quick(local)list
+nnoremap <silent> ]q :cnext<CR>zz
+nnoremap <silent> [q :cprev<CR>zz
+nnoremap <silent> ]l :lnext<CR>zz
+nnoremap <silent> [l :lprev<CR>zz
+nnoremap <silent> ]b :bnext<CR>
+nnoremap <silent> [b :bprev<CR>
+
+" Useful remap for edition
+" Explanation: Adding blank space between lines !
+" Details: Set a mark on a, adding blank lines below or above, come back on a
+nnoremap [<Space> maO<ESC>`a
+nnoremap ]<Space> mao<ESC>`a
+
 " Editing and sourcing the vimrc faster
 nnoremap <Leader>ev :vsplit $MYVIMRC<CR>
 nnoremap <Leader>sv :source $MYVIMRC<CR>
+
+" Make Y behave like other capitals D, C...
+nnoremap Y y$
 
 " Running Macro over an entire Visual bloc
 " Usage: Select a visual bloc and run @register over the bloc
