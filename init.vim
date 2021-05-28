@@ -24,7 +24,6 @@ set autoread
 set cursorline
 set backspace=indent,eol,start
 set wildmenu
-set wildoptions=""
 set wildignore+=*.pyc
 set showmode
 set splitright
@@ -34,6 +33,7 @@ set ttimeout
 set ttimeoutlen=10
 set lazyredraw
 set showcmd
+set signcolumn=yes
 " To use tags in vim, set the path to find tags
 " Explanation: Add all the directories up and up until HOME in
 " the path for tags (meaning of the semicolon). Stop at the first hit
@@ -63,7 +63,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-Plug 'tmsvg/pear-tree'
 
 " Env and colorscheme
 Plug 'morhetz/gruvbox'
@@ -72,16 +71,66 @@ Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'itchyny/landscape.vim'
 Plug 'nanotech/jellybeans.vim'
 
+" Lint and Fix
+Plug 'dense-analysis/ale'
+
 call plug#end()
 
 " remap leader and localleader key to space bar
 let mapleader = " "
 let maplocalleader = " "
 
+" " set statusline
+" set statusline=
+" " tail name of buffer
+" set statusline+=%t
+" " modified or not
+" set statusline+=\ %m
+" " read only
+" set statusline+=%r
+" " help
+" set statusline+=%h
+" " preview or not
+" set statusline+=%w
+" " go to right side
+" set statusline+=%=
+" " type of file
+" set statusline+=%y
+" " line number
+" set statusline+=\ %l
+" " ratio
+" set statusline+=/
+" " total lines in buffer
+" set statusline+=%L,
+" " Column number
+" set statusline+=%c
+" " percentage through file
+" set statusline+=\ %p
+" " % symbol
+" set statusline+=%%
+
 " Configuration of vim-fugitive
 nnoremap <Leader>g :G<CR>
 nnoremap <Leader>dl :diffget //3<CR>
 nnoremap <Leader>da :diffget //2<CR>
+
+" Configuration of ALE
+let g:ale_linters = {'python': ['jedils', 'flake8', 'pydocstyle']}
+let g:ale_fixers = {
+		\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+		\   'python': ['autopep8', 'isort'],
+		\}
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_save = 1
+let g:ale_fix_on_save = 1
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] says: %s [%severity%]'
+
+nnoremap gd :ALEGoToDefinition<CR>
+nnoremap K :ALEHover<CR>
 
 " Editing and sourcing the vimrc faster
 nnoremap <Leader>ev :vsplit $MYVIMRC<CR>
@@ -115,31 +164,6 @@ xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 function! ExecuteMacroOverVisualRange()
   echo "@".getcmdline()
   execute ":'<,'>normal @".nr2char(getchar())
-endfunction
-
-" Explanation: How to use mkprg to fill the quickfix list with errors
-" Do make with different makeprg settings.
-" Error lists from each makeprg are combined into one quickfix list.
-command! Pycheck call DoMake('pydocstyle', 'flake8')
-
-function! DoMake(...)
-" Save any changes because makeprg checks the file on disk 
-    update 
-    let savemp = &makeprg
-    let qflist = []
-    for prg in a:000
-        let &makeprg = prg . ' %'
-        silent make!
-        let qflist += getqflist()
-    endfor
-    if empty(qflist)
-        cclose
-    else
-        call setqflist(qflist)
-        copen
-        cfirst
-    endif
-    let &makeprg = savemp
 endfunction
 
 let g:python3_host_prog = "~/opt/anaconda3/envs/clonebase/bin/python"
