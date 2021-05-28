@@ -22,3 +22,6 @@ alias jup="jupyter-notebook"
 
 # tags aliases
 alias tag="ctags -R ."
+
+# python aliases
+alias pyw="python -W ignore"
