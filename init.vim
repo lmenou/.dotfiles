@@ -26,7 +26,7 @@ set backspace=indent,eol,start
 set wildmenu
 set wildoptions=""
 set wildignore+=*.pyc
-set noshowmode
+set showmode
 set splitright
 set scrolloff=5
 set encoding=utf-8
@@ -66,7 +66,6 @@ Plug 'tpope/vim-surround'
 Plug 'tmsvg/pear-tree'
 
 " Env and colorscheme
-Plug 'itchyny/lightline.vim'
 Plug 'morhetz/gruvbox'
 Plug 'arcticicestudio/nord-vim'
 Plug 'tyrannicaltoucan/vim-quantum'
@@ -79,22 +78,8 @@ call plug#end()
 let mapleader = " "
 let maplocalleader = " "
 
-" Set lightline
-let g:lightline = {
-		\ 'colorscheme' : 'jellybeans',
-		\ 'active': {
-		\   'left': [ [ 'mode', 'paste' ],
-		\             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-		\ },
-		\ 'component_function': {
-		\   'gitbranch': 'FugitiveHead',
-		\   'fileformat': 'LightlineFileformat',
-		\   'filetype': 'LightlineFiletype',
-		\ },
-		\ }
-
 " Configuration of vim-fugitive
-nnoremap <Leader>gs :G<CR>
+nnoremap <Leader>g :G<CR>
 nnoremap <Leader>dl :diffget //3<CR>
 nnoremap <Leader>da :diffget //2<CR>
 
@@ -102,11 +87,20 @@ nnoremap <Leader>da :diffget //2<CR>
 nnoremap <Leader>ev :vsplit $MYVIMRC<CR>
 nnoremap <Leader>sv :source $MYVIMRC<CR>
 
-" Moving in quickfix list easily
+" Moving in (local)quickfix list easily
+nnoremap [Q :cfirst<CR>zz
+nnoremap ]Q :clast<CR>zz
 nnoremap ]q :cnext<CR>zz
 nnoremap [q :cprev<CR>zz
+
+nnoremap [L :lfirst<CR>zz
+nnoremap ]L :llast<CR>zz
 nnoremap ]l :lnext<CR>zz
 nnoremap [l :lprev<CR>zz
+
+" Inserting new line above or below
+nnoremap [<Space> maO<ESC>`a
+nnoremap ]<Space> mao<ESC>`a
 
 " Make Y behave like other capitals D, C...
 nnoremap Y y$
@@ -123,7 +117,32 @@ function! ExecuteMacroOverVisualRange()
   execute ":'<,'>normal @".nr2char(getchar())
 endfunction
 
-let g:python3_host_prog = "/Users/lmenou/opt/anaconda3/envs/clonebase/bin/python3"
+" Explanation: How to use mkprg to fill the quickfix list with errors
+" Do make with different makeprg settings.
+" Error lists from each makeprg are combined into one quickfix list.
+command! Pycheck call DoMake('pydocstyle', 'flake8')
+
+function! DoMake(...)
+" Save any changes because makeprg checks the file on disk 
+    update 
+    let savemp = &makeprg
+    let qflist = []
+    for prg in a:000
+        let &makeprg = prg . ' %'
+        silent make!
+        let qflist += getqflist()
+    endfor
+    if empty(qflist)
+        cclose
+    else
+        call setqflist(qflist)
+        copen
+        cfirst
+    endif
+    let &makeprg = savemp
+endfunction
+
+let g:python3_host_prog = "~/opt/anaconda3/envs/clonebase/bin/python"
 "
 " Setting background
 " Explanation: To use colorscheme correctly following options must be given
