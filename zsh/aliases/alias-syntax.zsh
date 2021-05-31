@@ -1,3 +1,6 @@
+# cd aliases
+alias cdd="cd ~/Documents/"
+
 # tmux aliases
 alias tns="tmux new-session -s"
 alias tls="tmux ls"
