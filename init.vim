@@ -74,40 +74,52 @@ Plug 'nanotech/jellybeans.vim'
 " Lint and Fix
 Plug 'dense-analysis/ale'
 
+" Fuzzy Finder and more
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
 call plug#end()
 
 " remap leader and localleader key to space bar
 let mapleader = " "
 let maplocalleader = " "
 
-" " set statusline
-" set statusline=
-" " tail name of buffer
-" set statusline+=%t
-" " modified or not
-" set statusline+=\ %m
-" " read only
-" set statusline+=%r
-" " help
-" set statusline+=%h
-" " preview or not
-" set statusline+=%w
-" " go to right side
-" set statusline+=%=
-" " type of file
-" set statusline+=%y
-" " line number
-" set statusline+=\ %l
-" " ratio
-" set statusline+=/
-" " total lines in buffer
-" set statusline+=%L,
-" " Column number
-" set statusline+=%c
-" " percentage through file
-" set statusline+=\ %p
-" " % symbol
-" set statusline+=%%
+" Configuration of statusline
+" reset statusline
+set statusline=
+" tail name of buffer
+set statusline+=%t
+" Current git branch
+set statusline+=\ %{FugitiveStatusline()}
+" modified or not
+set statusline+=\ %m
+" read only
+set statusline+=%r
+" help
+set statusline+=%h
+" preview or not
+set statusline+=%w
+" go to right side
+set statusline+=%=
+" type of file
+set statusline+=%y
+" line number
+set statusline+=\ %l
+" ratio
+set statusline+=/
+" total lines in buffer
+set statusline+=%L,
+" Column number
+set statusline+=%c
+" percentage through file
+set statusline+=\ %p
+" % symbol
+set statusline+=%%
+
+" Configuration of netrw
+" Avoid banner, hit I to make it appear again
+let g:netrw_banner = 0
 
 " Configuration of vim-fugitive
 nnoremap <Leader>g :G<CR>
@@ -118,7 +130,7 @@ nnoremap <Leader>da :diffget //2<CR>
 let g:ale_linters = {'python': ['jedils', 'flake8', 'pydocstyle']}
 let g:ale_fixers = {
 		\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-		\   'python': ['autopep8', 'isort'],
+		\   'python': ['black', 'isort'],
 		\}
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 1
@@ -131,6 +143,11 @@ let g:ale_echo_msg_format = '[%linter%] says: %s [%severity%]'
 
 nnoremap gd :ALEGoToDefinition<CR>
 nnoremap K :ALEHover<CR>
+
+" Using telescope
+nnoremap <Leader>ff <CMD>Telescope find_files<CR>
+nnoremap <Leader>fg <CMD>Telescope live_grep<CR>
+nnoremap <Leader>fb <CMD>Telescope buffers<CR>
 
 " Editing and sourcing the vimrc faster
 nnoremap <Leader>ev :vsplit $MYVIMRC<CR>
@@ -151,6 +168,21 @@ nnoremap [l :lprev<CR>zz
 nnoremap [<Space> maO<ESC>`a
 nnoremap ]<Space> mao<ESC>`a
 
+" Option toggling
+" Explanation: Hit yo? to toggle option
+" Inspired from tpope's vim-unimpaired
+function! s:toggle(op) abort
+    return eval('&'.a:op) ? 'no'.a:op : a:op
+endfunction
+
+function! s:number_options() abort
+  return &number && &relativenumber ? 'nonumber norelativenumber' : 'number relativenumber'
+endfunction
+
+nnoremap yos :setlocal <C-R>=<SID>toggle("spell")<CR><CR>
+nnoremap yow :setlocal <C-R>=<SID>toggle("wrap")<CR><CR>
+nnoremap yom :setlocal <C-R>=<SID>number_options()<CR><CR>
+
 " Make Y behave like other capitals D, C...
 nnoremap Y y$
 
@@ -166,6 +198,7 @@ function! ExecuteMacroOverVisualRange()
   execute ":'<,'>normal @".nr2char(getchar())
 endfunction
 
+" Set python provider for nvim
 let g:python3_host_prog = "~/opt/anaconda3/envs/clonebase/bin/python"
 "
 " Setting background
