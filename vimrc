@@ -158,7 +158,7 @@ nnoremap <Leader>dl :diffget //3<CR>
 nnoremap <Leader>da :diffget //2<CR>
 
 " Configuration of ALE
-let g:ale_linters = {'python': ['jedils', 'flake8', 'pycodestyle', 'pydocstyle']}
+let g:ale_linters = {'python': ['pylint', 'jedils', 'flake8', 'pycodestyle', 'pydocstyle']}
 let g:ale_fixers = {
 		\   '*': ['remove_trailing_lines', 'trim_whitespace'],
 		\   'python': ['autopep8', 'isort'],
