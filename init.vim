@@ -33,7 +33,13 @@ set ttimeout
 set ttimeoutlen=10
 set lazyredraw
 set showcmd
+
 set signcolumn=yes
+
+" Grep faster and faster with RipGrep
+set grepprg=rg\ --vimgrep\ --no-heading
+set grepformat=%f:%l:%c:%m,%f:%l:%m
+
 " To use tags in vim, set the path to find tags
 " Explanation: Add all the directories up and up until HOME in
 " the path for tags (meaning of the semicolon). Stop at the first hit
@@ -71,13 +77,8 @@ Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'itchyny/landscape.vim'
 Plug 'nanotech/jellybeans.vim'
 
-" Lint and Fix
+" Awesome lint and fix
 Plug 'dense-analysis/ale'
-
-" Fuzzy Finder and more
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
 
 call plug#end()
 
@@ -127,7 +128,7 @@ nnoremap <Leader>dl :diffget //3<CR>
 nnoremap <Leader>da :diffget //2<CR>
 
 " Configuration of ALE
-let g:ale_linters = {'python': ['jedils', 'flake8', 'pydocstyle']}
+let g:ale_linters = {'python': ['flake8', 'pydocstyle']}
 let g:ale_fixers = {
 		\   '*': ['remove_trailing_lines', 'trim_whitespace'],
 		\   'python': ['black', 'isort'],
@@ -137,17 +138,7 @@ let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_enter = 0
 let g:ale_lint_on_save = 1
 let g:ale_fix_on_save = 1
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] says: %s [%severity%]'
-
-nnoremap gd :ALEGoToDefinition<CR>
-nnoremap K :ALEHover<CR>
-
-" Using telescope
-nnoremap <Leader>ff <CMD>Telescope find_files<CR>
-nnoremap <Leader>fg <CMD>Telescope live_grep<CR>
-nnoremap <Leader>fb <CMD>Telescope buffers<CR>
 
 " Editing and sourcing the vimrc faster
 nnoremap <Leader>ev :vsplit $MYVIMRC<CR>
@@ -169,19 +160,17 @@ nnoremap [<Space> maO<ESC>`a
 nnoremap ]<Space> mao<ESC>`a
 
 " Option toggling
-" Explanation: Hit yo? to toggle option
+" Explanation: Hit co? to toggle option
 " Inspired from tpope's vim-unimpaired
 function! s:toggle(op) abort
     return eval('&'.a:op) ? 'no'.a:op : a:op
 endfunction
 
-function! s:number_options() abort
-  return &number && &relativenumber ? 'nonumber norelativenumber' : 'number relativenumber'
-endfunction
-
-nnoremap yos :setlocal <C-R>=<SID>toggle("spell")<CR><CR>
-nnoremap yow :setlocal <C-R>=<SID>toggle("wrap")<CR><CR>
-nnoremap yom :setlocal <C-R>=<SID>number_options()<CR><CR>
+nnoremap cos :setlocal <C-R>=<SID>toggle("spell")<CR><CR>
+nnoremap cow :setlocal <C-R>=<SID>toggle("wrap")<CR><CR>
+nnoremap com :setlocal <C-R>=<SID>toggle("relativenumber")<CR><CR>
+nnoremap con :setlocal <C-R>=<SID>toggle("number")<CR><CR>
+nnoremap col :setlocal <C-R>=<SID>toggle("list")<CR><CR>
 
 " Make Y behave like other capitals D, C...
 nnoremap Y y$
@@ -200,7 +189,7 @@ endfunction
 
 " Set python provider for nvim
 let g:python3_host_prog = "~/opt/anaconda3/envs/clonebase/bin/python"
-"
+
 " Setting background
 " Explanation: To use colorscheme correctly following options must be given
 " set t_Co=256
