@@ -6,6 +6,7 @@ alias tns="tmux new-session -s"
 alias tls="tmux ls"
 alias tat="tmux attach -t"
 alias tkt="tmux kill-session -t"
+alias tks="tmux kill-server"
 
 # git aliases
 alias gst="git status"
