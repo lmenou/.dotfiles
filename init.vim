@@ -34,11 +34,9 @@ set ttimeoutlen=10
 set lazyredraw
 set showcmd
 
-set signcolumn=yes
-
 " Grep faster and faster with RipGrep
 set grepprg=rg\ --vimgrep\ --no-heading
-set grepformat=%f:%l:%c:%m,%f:%l:%m
+set grepformat+=%f:%l:%c:%m,%f:%l:%m
 
 " To use tags in vim, set the path to find tags
 " Explanation: Add all the directories up and up until HOME in
@@ -50,12 +48,6 @@ set tags=./tags,tags;$HOME
 " cmd mode + <TAB> completion
 " Explanation: ** look to all subdirectories
 set path+=**,*,;
-
-" Explanation: Completion or not ?
-" Add dictionary
-" set dictionary+=/usr/share/dict/words
-" Use code omnicompletion from ALE
-" set omnifunc=ale#completion#OmniFunc
 
 " Set the cursor
 set guicursor=
@@ -69,80 +61,37 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
+Plug 'tmsvg/pear-tree'
 
 " Env and colorscheme
 Plug 'morhetz/gruvbox'
+    let g:gruvbox_contrast_dark = 'soft'
 Plug 'arcticicestudio/nord-vim'
 Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'itchyny/landscape.vim'
 Plug 'nanotech/jellybeans.vim'
 
-" Awesome lint and fix
-Plug 'dense-analysis/ale'
-
 call plug#end()
 
-" remap leader and localleader key to space bar
+" Remap leader and localleader key to space bar
 let mapleader = " "
 let maplocalleader = " "
 
-" Configuration of statusline
-" reset statusline
-set statusline=
-" tail name of buffer
-set statusline+=%t
-" Current git branch
-set statusline+=\ %{FugitiveStatusline()}
-" modified or not
-set statusline+=\ %m
-" read only
-set statusline+=%r
-" help
-set statusline+=%h
-" preview or not
-set statusline+=%w
-" go to right side
-set statusline+=%=
-" type of file
-set statusline+=%y
-" line number
-set statusline+=\ %l
-" ratio
-set statusline+=/
-" total lines in buffer
-set statusline+=%L,
-" Column number
-set statusline+=%c
-" percentage through file
-set statusline+=\ %p
-" % symbol
-set statusline+=%%
+" Default Status Line + Git Branch :p
+set statusline=%<%t\ %{FugitiveStatusline()}\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 
 " Configuration of netrw
 " Avoid banner, hit I to make it appear again
 let g:netrw_banner = 0
-
-" Configuration of vim-fugitive
-nnoremap <Leader>g :G<CR>
-nnoremap <Leader>dl :diffget //3<CR>
-nnoremap <Leader>da :diffget //2<CR>
-
-" Configuration of ALE
-let g:ale_linters = {'python': ['flake8', 'pydocstyle']}
-let g:ale_fixers = {
-		\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-		\   'python': ['black', 'isort'],
-		\}
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 1
-let g:ale_lint_on_enter = 0
-let g:ale_lint_on_save = 1
-let g:ale_fix_on_save = 1
-let g:ale_echo_msg_format = '[%linter%] says: %s [%severity%]'
+" TODO: Make this cleaner
+let g:netrw_bufsettings = 'nomodifiable nomodified number nobuflisted nowrap readonly'
 
 " Editing and sourcing the vimrc faster
 nnoremap <Leader>ev :vsplit $MYVIMRC<CR>
 nnoremap <Leader>sv :source $MYVIMRC<CR>
+
+" Create Tag easily
+nnoremap <Leader>t :silent !ctags -R .<CR>
 
 " Moving in (local)quickfix list easily
 nnoremap [Q :cfirst<CR>zz
@@ -156,8 +105,13 @@ nnoremap ]l :lnext<CR>zz
 nnoremap [l :lprev<CR>zz
 
 " Inserting new line above or below
-nnoremap [<Space> maO<ESC>`a
-nnoremap ]<Space> mao<ESC>`a
+nnoremap [<Space> O<ESC>x
+nnoremap ]<Space> o<ESC>x
+
+" Configuration of vim-fugitive
+nnoremap <Leader>g :G<CR>
+nnoremap <Leader>dl :diffget //3<CR>
+nnoremap <Leader>da :diffget //2<CR>
 
 " Option toggling
 " Explanation: Hit co? to toggle option
@@ -178,13 +132,28 @@ nnoremap Y y$
 " Fast nohls
 nnoremap <TAB><CR> :nohls<CR>
 
+" Fast make for lint and fix
+" Explanation: Lint all the errors with possibly different compiler
+" This can be useful for linting
+" TODO: Find a way to run this asynchronously...
+nnoremap <Leader>m :silent make<CR>
+
+" Set make for python
+augroup python_file
+    " Empty autocomand
+    autocmd!
+    autocmd FileType python nnoremap <leader>f :silent !black %<CR>
+    " Find a way to do this asynchronously
+    autocmd FileType python set makeprg=pylint\ %
+augroup END
+
 " Running Macro over an entire Visual bloc
 " Usage: Select a visual bloc and run @register over the bloc
 xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 
 function! ExecuteMacroOverVisualRange()
-  echo "@".getcmdline()
-  execute ":'<,'>normal @".nr2char(getchar())
+    echo "@".getcmdline()
+    execute ":'<,'>normal @".nr2char(getchar())
 endfunction
 
 " Set python provider for nvim
@@ -192,8 +161,6 @@ let g:python3_host_prog = "~/opt/anaconda3/envs/clonebase/bin/python"
 
 " Setting background
 " Explanation: To use colorscheme correctly following options must be given
-" set t_Co=256
 set termguicolors
 set bg=dark
-" let g:gruvbox_contrast_dark = 'soft'
 colorscheme jellybeans
