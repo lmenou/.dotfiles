@@ -33,6 +33,7 @@ set ttimeout
 set ttimeoutlen=10
 set lazyredraw
 set showcmd
+set listchars+=eol:$
 
 " Grep faster and faster with RipGrep
 set grepprg=rg\ --vimgrep\ --no-heading
@@ -47,37 +48,39 @@ set tags=./tags,tags;$HOME
 " Usage: Open vim in the root of the project and use :find in
 " cmd mode + <TAB> completion
 " Explanation: ** look to all subdirectories
-set path+=**,*,;
-
-" Set the cursor
-set guicursor=
+set path+=**
 
 call plug#begin('~/.vim/plugged')
 
 " Git
 Plug 'tpope/vim-fugitive'
 
-" Edit
+" Commentary
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-surround'
+
+" Auto-pairs
 Plug 'tmsvg/pear-tree'
 
-" Env and colorscheme
+" Ultimate Fuzzy-Finder
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
+" Colorschemes
 Plug 'morhetz/gruvbox'
     let g:gruvbox_contrast_dark = 'soft'
 Plug 'arcticicestudio/nord-vim'
 Plug 'tyrannicaltoucan/vim-quantum'
-Plug 'itchyny/landscape.vim'
 Plug 'nanotech/jellybeans.vim'
 
 call plug#end()
+
 
 " Remap leader and localleader key to space bar
 let mapleader = " "
 let maplocalleader = " "
 
-" Default Status Line + Git Branch :p
+" Default Status Line tail + Git Branch :p
 set statusline=%<%t\ %{FugitiveStatusline()}\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 
 " Configuration of netrw
@@ -87,24 +90,25 @@ let g:netrw_banner = 0
 let g:netrw_bufsettings = 'nomodifiable nomodified number nobuflisted nowrap readonly'
 
 " Editing and sourcing the vimrc faster
-nnoremap <Leader>ev :vsplit $MYVIMRC<CR>
+nnoremap <Leader>ev :vsplit ~/.dotfiles/init.vim<CR>
 nnoremap <Leader>sv :source $MYVIMRC<CR>
 
 " Create Tag easily
 nnoremap <Leader>t :silent !ctags -R .<CR>
 
 " Moving in (local)quickfix list easily
-nnoremap [Q :cfirst<CR>zz
-nnoremap ]Q :clast<CR>zz
 nnoremap ]q :cnext<CR>zz
 nnoremap [q :cprev<CR>zz
 
-nnoremap [L :lfirst<CR>zz
-nnoremap ]L :llast<CR>zz
 nnoremap ]l :lnext<CR>zz
 nnoremap [l :lprev<CR>zz
 
+" Using :make easily
+nnoremap <Leader>m :silent make %<BAR>copen<CR><C-W>k
+nnoremap <Leader>n :cclose<BAR>lclose<CR>
+
 " Inserting new line above or below
+" Explanation: x for trailing characters
 nnoremap [<Space> O<ESC>x
 nnoremap ]<Space> o<ESC>x
 
@@ -112,6 +116,17 @@ nnoremap ]<Space> o<ESC>x
 nnoremap <Leader>g :G<CR>
 nnoremap <Leader>dl :diffget //3<CR>
 nnoremap <Leader>da :diffget //2<CR>
+
+" Configuration of Telescope
+" Disable pear-tree within TelescopePrompt
+let g:pear_tree_ft_disabled = ['TelescopePrompt']
+" Remap for best use of Telescope
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+nnoremap <leader>fd <cmd>lua require('telescope.builtin').find_files({cwd = "~/.dotfiles/"})<cr>
+nnoremap <leader>fs <cmd>lua require('telescope.builtin').find_files({cwd = "~/Documents/"})<cr>
 
 " Option toggling
 " Explanation: Hit co? to toggle option
@@ -125,27 +140,13 @@ nnoremap cow :setlocal <C-R>=<SID>toggle("wrap")<CR><CR>
 nnoremap com :setlocal <C-R>=<SID>toggle("relativenumber")<CR><CR>
 nnoremap con :setlocal <C-R>=<SID>toggle("number")<CR><CR>
 nnoremap col :setlocal <C-R>=<SID>toggle("list")<CR><CR>
+nnoremap coi :setlocal <C-R>=<SID>toggle("ignorecase")<CR><CR>
 
 " Make Y behave like other capitals D, C...
 nnoremap Y y$
 
 " Fast nohls
 nnoremap <TAB><CR> :nohls<CR>
-
-" Fast make for lint and fix
-" Explanation: Lint all the errors with possibly different compiler
-" This can be useful for linting
-" TODO: Find a way to run this asynchronously...
-nnoremap <Leader>m :silent make<CR>
-
-" Set make for python
-augroup python_file
-    " Empty autocomand
-    autocmd!
-    autocmd FileType python nnoremap <leader>f :silent !black %<CR>
-    " Find a way to do this asynchronously
-    autocmd FileType python set makeprg=pylint\ %
-augroup END
 
 " Running Macro over an entire Visual bloc
 " Usage: Select a visual bloc and run @register over the bloc
