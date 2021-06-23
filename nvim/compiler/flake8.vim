@@ -1,10 +1,6 @@
 " Vim compiler file
-" Compiler:	Flake8 for Python
-" Maintainer: lmenou
-" Last Change: 2021 May 7
-"
-" This enable to set the compiler to flake8 for python file and to run 
-" test for specific file or the entire test suite using :make
+" Compiler: Flake8 for Python
+" Set Compiler and respective ErrorFormat
 
 if exists("current_compiler")
   finish

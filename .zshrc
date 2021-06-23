@@ -15,6 +15,7 @@ export PYTHONPATH
 # PS1='%B[%bl@z%B] >>%b '
 PS1='[l@z] >> '
 
+# Set the colorstyle for ls
 export CLICOLOR=1
 export LSCOLORS=exfxexdxbxegedabagexex
 
@@ -59,7 +60,10 @@ bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
-bindkey -v '^?' backward-delete-char
+
+# Spit fzf in Documents directly
+# Explanation: CTRL-D give fzf in Documents
+bindkey -s '^d' 'cd ~/Documents/**^I'
 
 # To use fzf in the shell
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

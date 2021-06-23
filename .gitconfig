@@ -1,0 +1,13 @@
+[user]
+	name = lmenou
+	email = menl9426@gmail.com
+[merge]
+	tool = vimdiff
+[mergetool]
+	prompt = false
+[core]
+	editor = nvim
+[mergetool "vimdiff"]
+	path = nvim
+[credential]
+	helper = cache --timeout 7200
