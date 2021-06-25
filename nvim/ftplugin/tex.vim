@@ -2,6 +2,11 @@
 " Remap: Better TeX Support
 " File to make specific remap for TeX
 
+" Better default for TeX
+set tabstop=8 
+set softtabstop=4
+set shiftwidth=4 
+
 " Set the compiler
 compiler lacheck
 

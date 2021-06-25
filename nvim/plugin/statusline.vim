@@ -14,15 +14,15 @@ let g:currentmode={
        \}
 
 " Get the Git branch
-function! GitBranch()
-  return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
-endfunction
+" function! GitBranch()
+"   return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
+" endfunction
 
 " Get the Git branch in the statusline !
-function! StatuslineGit()
-  let l:branchname = GitBranch()
-  return strlen(l:branchname) > 0?'  '.l:branchname.' ':''
-endfunction
+" function! StatuslineGit()
+"   let l:branchname = GitBranch()
+"   return strlen(l:branchname) > 0?'  '.l:branchname.' ':''
+" endfunction
 
 " Initialize
 set statusline=
@@ -33,7 +33,7 @@ set statusline+=%<
 " Name (tail) of the file
 set statusline+=%t
 " Git branch
-set statusline+=\ %{StatuslineGit()}
+set statusline+=\ %{FugitiveStatusline()}
 " Help, modified, Read-only mode
 set statusline+=\ %h%m%r
 " Switch to right side

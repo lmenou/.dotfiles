@@ -1,32 +1,13 @@
-" What is commented out are nvim default !
-" syntax on
+" Neovim has strong defaults !
 
 set number
 set relativenumber
-" set autoindent
-set smartindent
-" set incsearch
-" set hlsearch
-" set laststatus=2
-set tabstop=8
-set softtabstop=4
-set shiftwidth=4
-" set smarttab
-set expandtab
+set noexpandtab
 set hidden
-" set noerrorbells
-" set visualbell
 set signcolumn=no
 set nowrap
-" set nobackup
-" set noswapfile
-" set nowritebackup
-" set autoread
 set cursorline
-" set backspace=indent,eol,start
-" set wildmenu
 set splitright
-set scrolloff=5
 set encoding=utf-8
 set ttimeout
 set ttimeoutlen=10
@@ -50,9 +31,17 @@ set tags+=./tags,tags;$HOME
 " Explanation: ** look to all subdirectories
 set path+=**
 
+" Ignore compiled files
+" Python
+set wildignore+=*.pyc
+" LaTeX
+set wildignore+=*.dvi,*.fls,*.pdf,*.aux,*.bbl
+set wildignore+=*.log,*.run.xml,*.out,*.blg,*.bcf
+
 call plug#begin('~/.vim/plugged')
 
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-commentary'
 
 " Colorschemes
 Plug 'morhetz/gruvbox'
@@ -73,9 +62,6 @@ nnoremap Y y$
 
 " Fast nohls
 nnoremap <TAB><CR> :nohls<CR>
-
-" Set python provider for nvim
-let g:python3_host_prog = "~/opt/anaconda3/envs/clonebase/bin/python"
 
 " Editing and sourcing the vimrc faster
 nnoremap <Leader>ev :vsplit $MYVIMRC<CR>
@@ -99,6 +85,15 @@ nnoremap <Leader>n :cclose <BAR> lclose<CR>
 " Inserting new line above or below
 nnoremap [<Space> O<ESC>x
 nnoremap ]<Space> o<ESC>x
+
+" Start insert mode for Terminal in enter
+autocmd TermOpen * startinsert
+
+" Switch to current directory for the file
+nnoremap \cd :lcd %:p:h<CR>
+
+" Set python provider for nvim
+let g:python3_host_prog = "~/opt/anaconda3/envs/clonebase/bin/python"
 
 " Setting background
 " Explanation: To use colorscheme correctly following options must be given

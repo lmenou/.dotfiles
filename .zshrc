@@ -22,17 +22,17 @@ export LSCOLORS=exfxexdxbxegedabagexex
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('$HOME/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
- if [ $? -eq 0 ]; then
-		 eval "$__conda_setup"
- else
-     if [ -f "$HOME/opt/anaconda3/etc/profile.d/conda.sh" ]; then
-         . "$HOME/opt/anaconda3/etc/profile.d/conda.sh"
-     else
-         export PATH="$HOME/opt/anaconda3/bin:$PATH"
-     fi
- fi
- unset __conda_setup
-# # <<< conda initialize <<<
+if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
+else
+        if [ -f "$HOME/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "$HOME/opt/anaconda3/etc/profile.d/conda.sh"
+        else
+        export PATH="$HOME/opt/anaconda3/bin:$PATH"
+        fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
 
 # Deactivate conda at the entrance of the shell
 # conda deactivate at startup in the conda config below
@@ -62,8 +62,8 @@ bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 
 # Spit fzf in Documents directly
-# Explanation: CTRL-D give fzf in Documents
-bindkey -s '^d' 'cd ~/Documents/**^I'
+# Explanation: CTRL-A give fzf in Documents
+bindkey -s '^a' 'cd ~/Documents/**^I'
 
 # To use fzf in the shell
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
