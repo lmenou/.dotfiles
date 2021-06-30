@@ -10,8 +10,8 @@
 	editor = nvim
 [mergetool "vimdiff"]
 	path = nvim
-[credential]
-	helper = cache --timeout 7200
 [difftool]
 	trustExitCode = true
 	prompt = false
+; [credential]
+; 	helper = cache --timeout 7200

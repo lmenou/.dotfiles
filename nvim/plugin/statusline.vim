@@ -2,15 +2,15 @@
 
 " Show the current mode used
 let g:currentmode={
-       \ 'n'  : 'NORMAL ',
-       \ 'v'  : 'VISUAL ',
-       \ 'V'  : 'V·Line ',
-       \ "\<C-V>" : 'V·BLOCK ',
-       \ 'i'  : 'INSERT ',
-       \ 'R'  : 'REPLACE ',
-       \ 'Rv' : 'V·REPLACE ',
-       \ 'c'  : 'COMMAND ',
-       \ 't'  : 'TERMINAL ',
+       \ 'n'  : '[ NORMAL ] ',
+       \ 'v'  : '[ VISUAL ] ',
+       \ 'V'  : '[ V·Line ] ',
+       \ "\<C-V>" : '[ V·BLOCK ] ',
+       \ 'i'  : '[ INSERT ] ',
+       \ 'R'  : '[ REPLACE ] ',
+       \ 'Rv' : '[ V·REPLACE ] ',
+       \ 'c'  : '[ COMMAND ] ',
+       \ 't'  : '[ TERMINAL ] ',
        \}
 
 " Get the Git branch
@@ -39,10 +39,10 @@ set statusline+=\ %h%m%r
 " Switch to right side
 set statusline+=%=
 " Show filetype
-set statusline+=%-8.(%y%)
+" set statusline+=%-8.(%y%)
 " Show fileencoding
-set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
+" set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
 " Show fileformat
-set statusline+=\ \[%{&fileformat}\]
+" set statusline+=\ \[%{&fileformat}\]
 " Show LineNumber and Virtual Column number, Percentage
 set statusline+=\ %-14.(%l:%L,%c%V%)\ %P

@@ -1,6 +1,7 @@
 " Neovim has strong defaults !
 
 set number
+set completeopt+=menuone
 set relativenumber
 set noexpandtab
 set hidden
@@ -40,14 +41,20 @@ set wildignore+=*.log,*.run.xml,*.out,*.blg,*.bcf
 
 call plug#begin('~/.vim/plugged')
 
+" Git
 Plug 'tpope/vim-fugitive'
+" Comments
 Plug 'tpope/vim-commentary'
 
+" LSP config
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/nvim-compe'
+
+" Tree-Sitter
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/playground'
+
 " Colorschemes
-Plug 'morhetz/gruvbox'
-    let g:gruvbox_contrast_dark = 'soft'
-Plug 'arcticicestudio/nord-vim'
-Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'nanotech/jellybeans.vim'
 Plug 'itchyny/landscape.vim'
 
@@ -64,16 +71,20 @@ nnoremap Y y$
 nnoremap <TAB><CR> :nohls<CR>
 
 " Editing and sourcing the vimrc faster
-nnoremap <Leader>ev :vsplit $MYVIMRC<CR>
+nnoremap <Leader>ev :find $MYVIMRC<CR>
 nnoremap <Leader>sv :source $MYVIMRC<CR>
 
 " Create Tag easily
 nnoremap <Leader>t :silent !ctags -R .<CR>
 
 " Moving in (local)quickfix list easily
+nnoremap [Q :cfirst<CR>zz
+nnoremap ]Q :clast<CR>zz
 nnoremap ]q :cnext<CR>zz
 nnoremap [q :cprev<CR>zz
 
+nnoremap [L :lfirst<CR>zz
+nnoremap ]L :llast<CR>zz
 nnoremap ]l :lnext<CR>zz
 nnoremap [l :lprev<CR>zz
 
@@ -83,20 +94,45 @@ nnoremap <Leader>m :silent make % <BAR> copen<CR><C-W>k
 nnoremap <Leader>n :cclose <BAR> lclose<CR>
 
 " Inserting new line above or below
-nnoremap [<Space> O<ESC>x
-nnoremap ]<Space> o<ESC>x
+nnoremap [<Space> O<ESC>
+nnoremap ]<Space> o<ESC>
 
-" Start insert mode for Terminal in enter
-autocmd TermOpen * startinsert
+" Fast Lexplore
+" Explanation: This is due to the fact that
+" LSP brings Lsp{function} in command-line
+command! L Lexplore
 
 " Switch to current directory for the file
-nnoremap \cd :lcd %:p:h<CR>
+" Locally
+nnoremap \lcd :lcd %:p:h<CR>
+" Globally
+nnoremap \cd :cd %:p:h<CR>
+
+" Access full file name
+" Press ESC afterwards
+nnoremap \fd :<C-R>=expand("%:p")<CR>
 
 " Set python provider for nvim
-let g:python3_host_prog = "~/opt/anaconda3/envs/clonebase/bin/python"
+let g:python3_host_prog = '~/opt/anaconda3/envs/clonebase/bin/python'
+
+" Set the source for LSP-autocomplete
+" Explanation: if wants to use LSP protocol
+lua require("lsp-config")
+
+" Set the config for Tree-Sitter
+lua require("treesitt-config")
+
+" Set the LSP-autocomplete
+" Explanation: without LSP protocol
+" Give it a try
+" lua require("autocomplete-config")
+
+" Plugin development
+let &runtimepath.=',~/Documents/LearningVim/nvim-luasync/'
 
 " Setting background
 " Explanation: To use colorscheme correctly following options must be given
 set termguicolors
+" set t_Co=256colors
 set bg=dark
 colorscheme landscape
