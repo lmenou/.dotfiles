@@ -1,0 +1,28 @@
+" Essential settings
+
+call plug#begin('~/.vim/plugged')
+
+
+" Git
+Plug 'tpope/vim-fugitive'
+
+" Edit
+Plug 'tpope/vim-commentary'
+
+" Env and colorscheme
+Plug 'itchyny/landscape.vim'
+Plug 'nanotech/jellybeans.vim'
+
+call plug#end()
+
+" remap leader and localleader key to space bar
+let mapleader = " "
+let maplocalleader = " "
+
+" Setting background
+" Explanation: To use colorscheme correctly following options must be given
+set t_Co=256
+" set termguicolors
+set bg=dark
+" let g:gruvbox_contrast_dark = 'soft'
+colorscheme landscape
