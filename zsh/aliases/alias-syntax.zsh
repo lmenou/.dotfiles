@@ -1,3 +1,6 @@
+# ls alias 
+alias ls="ls -G"
+
 # tmux aliases
 alias tns="tmux new-session -s"
 alias tls="tmux ls"
