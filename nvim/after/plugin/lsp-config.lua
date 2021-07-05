@@ -3,18 +3,18 @@
 --]]
 local nvim_lsp = require('lspconfig')
 
--- On attach function to configure LSP
-local on_attach = function(_client, bufnr)
+-- Because I ate to be linted in the face
+-- Use location list instead if necesary
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    virtual_text = false;
+    signs = false,
+    underline = false,
+  }
+)
 
-  -- Because I ate to be linted in the face
-  -- Use location list instead if necesary
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-      virtual_text = false;
-      signs = false,
-      underline = false,
-    }
-  )
+-- On attach function to configure LSP
+local on_attach = function(client, bufnr)
 
   -- Define the Mappings
   local opts = { noremap=true, silent=true }
@@ -26,8 +26,29 @@ local on_attach = function(_client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>ac', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+
+  -- Set autocommands conditional on server_capabilities
+  -- Highlight
+  if client.resolved_capabilities.document_highlight then
+    vim.cmd [[
+      augroup lsp_document_highlight
+        autocmd! * <buffer>
+        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
+    ]]
+  end
+  -- Format
+  if client.resolved_capabilities.document_formatting then
+    vim.cmd [[
+    augroup Format
+    autocmd! * <buffer>
+    autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()
+    augroup END
+    ]]
+  end
 end
 
 -- Language servers themselves
