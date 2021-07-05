@@ -15,10 +15,6 @@ export PYTHONPATH
 # PS1='%B[%bl@z%B] >>%b '
 PS1='[l@z] >> '
 
-# Set the colorstyle for ls
-export CLICOLOR=1
-export LSCOLORS=exfxexdxbxegedabagexex
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('$HOME/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -63,14 +59,6 @@ bindkey -M menuselect 'j' vi-down-line-or-history
 
 # To use fzf in the shell
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# fd - cd to selected directory
-fcd() {
-	local dir
-	dir=$(find ${1:-.} -path '*/\.*' -prune \
-		-o -type d -print 2> /dev/null | fzf +m) &&
-	cd "$dir"
-}
 
 # To use aliases
 source $HOME/.dotfiles/zsh/aliases/alias-syntax.zsh
