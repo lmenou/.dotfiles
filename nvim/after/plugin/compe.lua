@@ -1,12 +1,12 @@
--- [[ TODO:
--- Configure properly windows for hover and
--- signature help. Move Maps to Lua
--- ]]
+--[[ TODO:
+ Configure properly windows for hover and
+ signature help. Move Maps to Lua
+--]]
 -- Set menu for completion
 vim.o.completeopt="menuone,noselect"
 
 --[[ Avoid the Pattern no found in statusbar
-== set shortmess+=c
+--== set shortmess+=c
 --]]
 vim.opt.shortmess:append('c')
 
@@ -14,9 +14,7 @@ vim.opt.shortmess:append('c')
 -- TODO: Verify if it works
 vim.g.completion_matching_strategy_list="exact, substring, fuzzy"
 
--- [[ Set option for completion
--- Configuration
--- ]]
+-- Configuration compe
 require'compe'.setup {
   enabled = true;
   autocomplete = true;
@@ -30,7 +28,7 @@ require'compe'.setup {
   max_abbr_width = 100;
   max_kind_width = 100;
   max_menu_width = 100;
-  documentation = false;
+  documentation = false; 
 
   source = {
     path = true;

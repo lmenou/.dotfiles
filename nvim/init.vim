@@ -4,6 +4,7 @@ call plug#begin('~/.vim/plugged')
 
 " Git
 Plug 'tpope/vim-fugitive'
+
 " Comments
 Plug 'tpope/vim-commentary'
 

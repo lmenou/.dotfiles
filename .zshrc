@@ -10,10 +10,8 @@ export PYTHONPATH
 
 # Changing prompt command at the beginning
 # ORIGIN : PS1='%n@%m %1~ %# ' i.e remove the directory printed in tmux
-# PS1='%B%F{124}[%f%F{76}l%f%F{39}@%f%F{76}z%f%F{124}]%f %1~ >> %b'
-# PS1='%B[%bl@z%B]%b %B%1~ >>%b '
-# PS1='%B[%bl@z%B] >>%b '
-PS1='[l@z] >> '
+# PS1='[l@z] >> '
+PROMPT='lmenou - %1~ %# '
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
