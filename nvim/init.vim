@@ -44,4 +44,4 @@ let g:python_provider = "~/opt/anaconda3/envs/clonebase/bin/python"
 set termguicolors
 " set t_Co=256colors
 set bg=dark
-colorscheme landscape
+colorscheme gruvbox8

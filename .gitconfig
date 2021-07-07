@@ -13,5 +13,5 @@
 [difftool]
 	trustExitCode = true
 	prompt = false
-; [credential]
-; 	helper = cache --timeout 7200
+[credential]
+	helper = cache --timeout=3600
