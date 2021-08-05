@@ -7,10 +7,13 @@ alias tks="tmux kill-server"
 
 # git aliases
 alias gst="git status"
-alias gl="git log --all --decorate --oneline --graph"
+alias gl="git log"
+alias glog="git log --all --decorate --oneline --graph"
+alias gre="git rebase"
+alias gbr="git branch"
 alias gpull="git pull"
 alias gpush="git push"
-alias gc="git commit -m"
+alias gc="git commit"
 alias ga="git add"
 
 # conda aliases
