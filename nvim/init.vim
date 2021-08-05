@@ -1,4 +1,4 @@
-" Here comes the plugin
+ " Here comes the plugins
 
 call plug#begin('~/.vim/plugged')
 
@@ -8,7 +8,7 @@ Plug 'tpope/vim-fugitive'
 " Comments
 Plug 'tpope/vim-commentary'
 
-" LSP config
+" LSP and Autocomplete
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
 
@@ -33,10 +33,12 @@ call plug#end()
 let mapleader = " "
 let maplocalleader = " "
 
+" Set the python provider
 let g:python_provider = "~/opt/anaconda3/envs/clonebase/bin/python"
 
 " Plugin development
-" let &runtimepath.=',~/Documents/LearningVim/nvim-luasync/'
+let &runtimepath.=',~/Documents/LearningVim/nvim-luamake/'
+let g:quick_open = 1
 
 " Setting background
 " Explanation: To use colorscheme correctly following options 

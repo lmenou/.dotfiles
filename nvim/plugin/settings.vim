@@ -15,6 +15,8 @@ set showcmd
 set listchars+=eol:$
 set noshowmode
 set scrolloff=5
+" Remove annoying temporary files
+set noswapfile
 
 " Grep faster and faster with RipGrep
 set grepprg=rg\ --vimgrep\ --no-heading

@@ -1,15 +1,15 @@
 " Vim compiler file
-" Compiler: Pydocstyle for Python
+" Compiler: Pylint for Python
 " Set Compiler and respective ErrorFormat
 
 if exists("current_compiler")
   finish
 endif
-let current_compiler = "pydocstyle"
+let current_compiler = "pylint"
 
 if exists(":CompilerSet") != 2		" older Vim always used :setlocal
   command -nargs=* CompilerSet setlocal <args>
 endif
 
-CompilerSet makeprg=pydocstyle
-CompilerSet errorformat=%W%f:%l\ %.%#:,%+C\ %m,%-G%.%#
+CompilerSet makeprg=pylint
+CompilerSet errorformat=%A%f:%l:%c:\ %m,%A%f:%l:\ %m,%A%f:(%l):\ %m,%-Z%p^%.%#,%-G%.%#

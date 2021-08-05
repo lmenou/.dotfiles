@@ -12,4 +12,4 @@ if exists(":CompilerSet") != 2		" older Vim always used :setlocal
 endif
 
 CompilerSet makeprg=lacheck
-CompilerSet errorformat="%f"\,\ line\ %l:\ %m
+CompilerSet errorformat=%A%*[\"]%f%*[\"]\\,\ line\ %l:\ %m,%-G%.%#

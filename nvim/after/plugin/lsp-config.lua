@@ -28,6 +28,8 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>ac', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '[g', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', ']g', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
 
   -- Set autocommands conditional on server_capabilities
   -- Automatic format
@@ -54,12 +56,18 @@ local on_attach = function(client, bufnr)
 
 end
 
--- Language servers themselves
-local servers = { 'pyright', 'texlab' }
+-- Config for pyright
+nvim_lsp.pyright.setup{ on_attach = on_attach }
 
--- Attach to buffers
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
-    on_attach = on_attach,
+-- Config for texlab
+nvim_lsp.texlab.setup{
+  on_attach = on_attach;
+  settings = {
+    latex = {
+      chktex = {
+        onOpenAndSave = true,
+        onEdit = true,
+      }
+    }
+  }
 }
-end
