@@ -8,20 +8,21 @@ require "nvim-treesitter.configs".setup {
   highlight = {
     enable = true,
     disable = {},
+    additional_vim_regex_highlighting = false,
   }, 
 
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = "<Leader>gn",
-      node_incremental = "]e",
-      scope_incremental = "<Leader>gc",
-      node_decremental = "[e",
+      init_selection = "gnn",
+      node_incremental = "grn",
+      scope_incremental = "grc",
+      node_decremental = "grm",
     },
   },
 
   indent = {
-    enable = false,
+    enable = true,
     disable = {},
   },
 

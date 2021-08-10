@@ -30,6 +30,7 @@ call plug#end()
 
 " Remap leader and localleader key to space bar
 " Set this early to avoid confusion
+nnoremap <Space> <nop>
 let mapleader = " "
 let maplocalleader = " "
 
@@ -37,7 +38,7 @@ let maplocalleader = " "
 let g:python_provider = "~/opt/anaconda3/envs/clonebase/bin/python"
 
 " Plugin development
-let &runtimepath.=',~/Documents/LearningVim/nvim-luamake/'
+let &runtimepath.=',~/Documents/NVimPlugin/nvim-luamake/'
 let g:quick_open = 1
 
 " Setting background

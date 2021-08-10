@@ -11,5 +11,8 @@ if exists(":CompilerSet") != 2		" older Vim always used :setlocal
   command -nargs=* CompilerSet setlocal <args>
 endif
 
-CompilerSet makeprg=pylint
-CompilerSet errorformat=%A%f:%l:%c:\ %m,%A%f:%l:\ %m,%A%f:(%l):\ %m,%-Z%p^%.%#,%-G%.%#
+CompilerSet makeprg=pylint\ --output-format=text\ --msg-template=\"{path}:{line}:{column}:{C}:\ [{symbol}]\ {msg}\ [{msg_id}]\"\ --reports=no
+CompilerSet errorformat=%A%f:%l:%c:%t:\ %m,\ %A%f:%l:\ %m,\ %A%f:(%l):\ %m,\ %-Z%p^%.%#,\ %-G%.%#
+
+" Previous Version without specified format
+" CompilerSet errorformat=%A%f:%l:%c:\ %m,%A%f:%l:\ %m,%A%f:(%l):\ %m,%-Z%p^%.%#,%-G%.%#

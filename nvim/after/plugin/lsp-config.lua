@@ -3,8 +3,8 @@
 --]]
 local nvim_lsp = require('lspconfig')
 
--- Because I ate to be linted in the face
--- Use location list instead if necesary
+-- Because I hate to be linted in the face
+-- Use location list instead if necessary
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
     virtual_text = false;
@@ -57,7 +57,10 @@ local on_attach = function(client, bufnr)
 end
 
 -- Config for pyright
-nvim_lsp.pyright.setup{ on_attach = on_attach }
+-- nvim_lsp.pyright.setup{ on_attach = on_attach }
+
+-- Config for jedi_language_server
+nvim_lsp.jedi_language_server.setup{ on_attach = on_attach }
 
 -- Config for texlab
 nvim_lsp.texlab.setup{
